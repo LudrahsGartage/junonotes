@@ -7,7 +7,6 @@ import 'package:junonotes/views/login_view.dart';
 import 'package:junonotes/views/Register_View.dart';
 import 'firebase_options.dart';
 import 'package:junonotes/views/Verify_email_view.dart';
-import 'dart:developer' as devtools show log;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +20,7 @@ void main() {
       routes: {
         '/login/': (context) => const LoginView(),
         '/register/': (context) => const RegisterView(), 
+        '/notes/': (context) => const NotesView(),
       },
     ),
   );
