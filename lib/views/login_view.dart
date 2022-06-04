@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
 import 'package:junonotes/constants/routes.dart';
 import 'package:junonotes/utilities/show_error_dialog.dart';
 
@@ -33,7 +32,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Login'),
       ),
       body: Column(
         children: [

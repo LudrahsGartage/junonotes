@@ -1,4 +1,4 @@
-
+import 'dart:js';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,8 +20,9 @@ void main() {
       home: const HomePage(),
       routes: {
         loginRoute: (context) => const LoginView(),
-        registerRoute: (context) => const RegisterView(), 
+        registerRoute: (context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
+        verifyEmailRoute: (context) => const VerifyEmailView(),
       },
     ),
   );
@@ -33,30 +34,34 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
+      future: Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      ),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
             final user = FirebaseAuth.instance.currentUser;
             if (user != null) {
               FirebaseAuth.instance.currentUser?.reload();
-              if (user.emailVerified) {return const NotesView();}
-              else {
-                return const VerifyEmailView();}
-            } else {return const LoginView();}
-              // final user = FirebaseAuth.instance.currentUser;
-              // if (user?.emailVerified ?? false) {
-              // } else {
-              //   return const VerifyEmailView();
-              // }
-              // return const Text('Done');
-            default:
-              return const CircularProgressIndicator();
-          }
-        },
-      );
+              if (user.emailVerified) {
+                return const NotesView();
+              } else {
+                return const VerifyEmailView();
+              }
+            } else {
+              return const LoginView();
+            }
+          // final user = FirebaseAuth.instance.currentUser;
+          // if (user?.emailVerified ?? false) {
+          // } else {
+          //   return const VerifyEmailView();
+          // }
+          // return const Text('Done');
+          default:
+            return const CircularProgressIndicator();
+        }
+      },
+    );
   }
 }
 
@@ -76,20 +81,25 @@ class _NotesViewState extends State<NotesView> {
       appBar: AppBar(
         title: const Text('Your Notes'),
         actions: [
-          PopupMenuButton<MenuAction> (onSelected: (value) async {
-            switch (value) {  
-              case MenuAction.logout:
-                final shouldLogout = await showLogOutDialog(context);
-                if (shouldLogout) {
-                 await FirebaseAuth.instance.signOut();
-                 Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false);
-                }
-            }
-          }, itemBuilder: (context) { return [
-            const PopupMenuItem<MenuAction>(
-              value: MenuAction.logout,
-              child: Text('Logout'))];
-          },)
+          PopupMenuButton<MenuAction>(
+            onSelected: (value) async {
+              switch (value) {
+                case MenuAction.logout:
+                  final shouldLogout = await showLogOutDialog(context);
+                  if (shouldLogout) {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil(loginRoute, (_) => false);
+                  }
+              }
+            },
+            itemBuilder: (context) {
+              return [
+                const PopupMenuItem<MenuAction>(
+                    value: MenuAction.logout, child: Text('Logout'))
+              ];
+            },
+          )
         ],
       ),
       body: const Text('hello'),
@@ -97,22 +107,25 @@ class _NotesViewState extends State<NotesView> {
   }
 }
 
-
-Future<bool> showLogOutDialog (BuildContext context) {
+Future<bool> showLogOutDialog(BuildContext context) {
   return showDialog(
-    context: context, 
-    builder: (context){
-      return AlertDialog(
-        title: const Text('Log out'),
-        content: const Text('Are you sure you want to log out?'),
-        actions: [
-          TextButton(onPressed: () {
-            Navigator.of(context).pop(false);
-          }, child: const Text('Cancel')),
-          TextButton(onPressed: () {
-            Navigator.of(context).pop(true);
-          }, child: const Text('Log out'))
-        ],
-      );
-  }).then(((value) => value ?? false));
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Log out'),
+          content: const Text('Are you sure you want to log out?'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: const Text('Cancel')),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text('Log out'))
+          ],
+        );
+      }).then(((value) => value ?? false));
 }
