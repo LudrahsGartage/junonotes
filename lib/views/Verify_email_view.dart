@@ -33,7 +33,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               (route) => false,
             );
           },
-          child: Text('Go back to Start Screen'),
+          child: const Text('Go back to Start Screen'),
         ),
       ]),
     );
