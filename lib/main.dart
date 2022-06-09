@@ -3,7 +3,6 @@ import 'package:junonotes/services/auth/auth_service.dart';
 import 'package:junonotes/views/login_view.dart';
 import 'package:junonotes/views/Register_View.dart';
 import 'package:junonotes/views/notes_view.dart';
-import 'firebase_options.dart';
 import 'package:junonotes/views/verify_email_view.dart';
 import 'constants/routes.dart';
 
