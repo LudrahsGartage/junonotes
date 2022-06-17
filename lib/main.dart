@@ -47,12 +47,6 @@ class HomePage extends StatelessWidget {
             } else {
               return const LoginView();
             }
-          // final user = FirebaseAuth.instance.currentUser;
-          // if (user?.emailVerified ?? false) {
-          // } else {
-          //   return const VerifyEmailView();
-          // }
-          // return const Text('Done');
           default:
             return const CircularProgressIndicator();
         }
