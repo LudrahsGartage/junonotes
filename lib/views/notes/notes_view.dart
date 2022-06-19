@@ -47,7 +47,7 @@ class _NotesViewState extends State<NotesView> {
                   final shouldLogout = await showLogOutDialog(context);
                   if (shouldLogout) {
                     context.read<AuthBloc>().add(
-                          const AuthEventLogout(),
+                          const AuthEventLogOut(),
                         );
                   }
               }
@@ -84,10 +84,10 @@ class _NotesViewState extends State<NotesView> {
                   },
                 );
               } else {
-                return const Center(child: CircularProgressIndicator());
+                return const CircularProgressIndicator();
               }
             default:
-              return const Center(child: CircularProgressIndicator());
+              return const CircularProgressIndicator();
           }
         },
       ),
