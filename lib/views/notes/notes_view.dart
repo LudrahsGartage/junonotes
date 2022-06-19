@@ -1,7 +1,10 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junonotes/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:junonotes/constants/routes.dart';
 import 'package:junonotes/enums/menu_actions.dart';
+import 'package:junonotes/services/auth/bloc/auth_bloc.dart';
+import 'package:junonotes/services/auth/bloc/auth_event.dart';
 import 'package:junonotes/utilities/dialogs/logout_dialog.dart';
 import 'package:junonotes/views/notes/notes_list_view.dart';
 
@@ -43,11 +46,9 @@ class _NotesViewState extends State<NotesView> {
                 case MenuAction.logout:
                   final shouldLogout = await showLogOutDialog(context);
                   if (shouldLogout) {
-                    await AuthService.firebase().logOut();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      loginRoute,
-                      (_) => false,
-                    );
+                    context.read<AuthBloc>().add(
+                          const AuthEventLogout(),
+                        );
                   }
               }
             },
@@ -83,10 +84,10 @@ class _NotesViewState extends State<NotesView> {
                   },
                 );
               } else {
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               }
             default:
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
           }
         },
       ),
