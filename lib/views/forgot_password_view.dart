@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junonotes/extensions/buildcontext/loc.dart';
 import 'package:junonotes/services/auth/bloc/auth_bloc.dart';
 import 'package:junonotes/services/auth/bloc/auth_event.dart';
 import 'package:junonotes/services/auth/bloc/auth_state.dart';
@@ -39,46 +40,47 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             await showPasswordResetDialog(context);
           }
           if (state.exception != null) {
-            await showErrorDialog(context,
-                'We could not send you an email. Please make sure you are a registered user.');
+            await showErrorDialog(
+                context, context.loc.forgot_password_view_generic_error);
           }
         }
       }),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Forgot Password'),
+          title: Text(context.loc.forgot_password),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const Text(
-                  'If you have forgotten your password, enter your email and we will send you a link that will let you reset it.'),
-              TextField(
-                keyboardType: TextInputType.emailAddress,
-                autocorrect: false,
-                autofocus: true,
-                controller: _controller,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your email here',
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(context.loc.forgot_password_view_prompt),
+                TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  autocorrect: false,
+                  autofocus: true,
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    hintText: context.loc.email_text_field_placeholder,
+                  ),
                 ),
-              ),
-              TextButton(
-                onPressed: () {
-                  final email = _controller.text;
-                  context
-                      .read<AuthBloc>()
-                      .add(AuthEventForgotPassword(email: email));
-                },
-                child: const Text('Send Request'),
-              ),
-              TextButton(
-                onPressed: () {
-                  context.read<AuthBloc>().add(const AuthEventLogOut());
-                },
-                child: const Text('Return to Login Page'),
-              ),
-            ],
+                TextButton(
+                  onPressed: () {
+                    final email = _controller.text;
+                    context
+                        .read<AuthBloc>()
+                        .add(AuthEventForgotPassword(email: email));
+                  },
+                  child: Text(context.loc.forgot_password_view_send_me_link),
+                ),
+                TextButton(
+                  onPressed: () {
+                    context.read<AuthBloc>().add(const AuthEventLogOut());
+                  },
+                  child: Text(context.loc.forgot_password_view_back_to_login),
+                ),
+              ],
+            ),
           ),
         ),
       ),

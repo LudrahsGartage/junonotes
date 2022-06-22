@@ -12,12 +12,16 @@ import 'package:junonotes/views/notes/notes_view.dart';
 import 'package:junonotes/views/verify_email_view.dart';
 import 'constants/routes.dart';
 import 'package:junonotes/services/auth/bloc/auth_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),

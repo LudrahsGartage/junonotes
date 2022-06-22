@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:junonotes/utilities/dialogs/generic_dialog.dart';
+import 'package:junonotes/extensions/buildcontext/loc.dart';
 
 Future<bool> showDeleteDialog(BuildContext context) {
   return showGenericDialog(
     context: context,
-    title: 'Delete',
-    content: 'Are you sure you want to delete this note?',
+    title: context.loc.delete,
+    content: context.loc.delete_note_prompt,
     optionBuilder: () => {
-      'Cancel': false,
-      'Yes': true,
+      context.loc.cancel: false,
+      context.loc.cancel: true,
     },
   ).then((value) => value ?? false);
 }

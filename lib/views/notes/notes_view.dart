@@ -11,6 +11,10 @@ import 'package:junonotes/views/notes/notes_list_view.dart';
 import '../../services/cloud/cloud_note.dart';
 import '../../services/cloud/firebase_cloud_storage.dart';
 
+extension Count<T extends Iterable> on Stream {
+  Stream<int> get getLength => map((event) => event.length);
+}
+
 class NotesView extends StatefulWidget {
   const NotesView({Key? key}) : super(key: key);
 
