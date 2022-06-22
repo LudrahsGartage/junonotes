@@ -7,6 +7,7 @@ import 'package:junonotes/services/auth/bloc/auth_bloc.dart';
 import 'package:junonotes/services/auth/bloc/auth_event.dart';
 import 'package:junonotes/utilities/dialogs/logout_dialog.dart';
 import 'package:junonotes/views/notes/notes_list_view.dart';
+import 'package:junonotes/extensions/buildcontext/loc.dart';
 
 import '../../services/cloud/cloud_note.dart';
 import '../../services/cloud/firebase_cloud_storage.dart';
@@ -36,7 +37,16 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Notes'),
+        title: StreamBuilder(
+            stream: _notesService.allNotes(ownerUserId: userId).getLength,
+            builder: (context, AsyncSnapshot<int> snapshot) {
+              if (snapshot.hasData) {
+                final noteCount = snapshot.data ?? 0;
+                return Text(context.loc.notes_title(noteCount));
+              } else {
+                return const Text('');
+              }
+            }),
         actions: [
           IconButton(
             onPressed: () {
@@ -57,10 +67,10 @@ class _NotesViewState extends State<NotesView> {
               }
             },
             itemBuilder: (context) {
-              return const [
+              return [
                 PopupMenuItem<MenuAction>(
                   value: MenuAction.logout,
-                  child: Text('Log out'),
+                  child: Text(context.loc.logout_button),
                 ),
               ];
             },
