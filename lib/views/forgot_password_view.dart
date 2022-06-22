@@ -12,7 +12,7 @@ class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({Key? key}) : super(key: key);
 
   @override
-  State<ForgotPasswordView> createState() => _ForgotPasswordViewState();
+  _ForgotPasswordViewState createState() => _ForgotPasswordViewState();
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
@@ -33,18 +33,20 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: ((context, state) async {
+      listener: (context, state) async {
         if (state is AuthStateForgotPassword) {
           if (state.hasSentEmail) {
             _controller.clear();
-            await showPasswordResetDialog(context);
+            await showPasswordResetSentDialog(context);
           }
           if (state.exception != null) {
             await showErrorDialog(
-                context, context.loc.forgot_password_view_generic_error);
+              context,
+              context.loc.forgot_password_view_generic_error,
+            );
           }
         }
-      }),
+      },
       child: Scaffold(
         appBar: AppBar(
           title: Text(context.loc.forgot_password),
@@ -54,7 +56,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Text(context.loc.forgot_password_view_prompt),
+                Text(
+                  context.loc.forgot_password_view_prompt,
+                ),
                 TextField(
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
@@ -71,13 +75,19 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                         .read<AuthBloc>()
                         .add(AuthEventForgotPassword(email: email));
                   },
-                  child: Text(context.loc.forgot_password_view_send_me_link),
+                  child: Text(
+                    context.loc.forgot_password_view_send_me_link,
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
-                    context.read<AuthBloc>().add(const AuthEventLogOut());
+                    context.read<AuthBloc>().add(
+                          const AuthEventLogOut(),
+                        );
                   },
-                  child: Text(context.loc.forgot_password_view_back_to_login),
+                  child: Text(
+                    context.loc.forgot_password_view_back_to_login,
+                  ),
                 ),
               ],
             ),

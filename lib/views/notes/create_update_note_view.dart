@@ -93,7 +93,9 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.loc.note),
+        title: Text(
+          context.loc.note,
+        ),
         actions: [
           IconButton(
             onPressed: () async {
@@ -105,7 +107,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
               }
             },
             icon: const Icon(Icons.share),
-          )
+          ),
         ],
       ),
       body: FutureBuilder(
@@ -119,12 +121,11 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: InputDecoration(
-                  border: InputBorder.none,
                   hintText: context.loc.start_typing_your_note,
                 ),
               );
             default:
-              return const Center(child: CircularProgressIndicator());
+              return const CircularProgressIndicator();
           }
         },
       ),

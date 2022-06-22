@@ -12,7 +12,7 @@ import 'package:junonotes/extensions/buildcontext/loc.dart';
 import '../../services/cloud/cloud_note.dart';
 import '../../services/cloud/firebase_cloud_storage.dart';
 
-extension Count<T extends Iterable> on Stream {
+extension Count<T extends Iterable> on Stream<T> {
   Stream<int> get getLength => map((event) => event.length);
 }
 
@@ -38,15 +38,17 @@ class _NotesViewState extends State<NotesView> {
     return Scaffold(
       appBar: AppBar(
         title: StreamBuilder(
-            stream: _notesService.allNotes(ownerUserId: userId).getLength,
-            builder: (context, AsyncSnapshot<int> snapshot) {
-              if (snapshot.hasData) {
-                final noteCount = snapshot.data ?? 0;
-                return Text(context.loc.notes_title(noteCount));
-              } else {
-                return const Text('');
-              }
-            }),
+          stream: _notesService.allNotes(ownerUserId: userId).getLength,
+          builder: (context, AsyncSnapshot<int> snapshot) {
+            if (snapshot.hasData) {
+              final noteCount = snapshot.data ?? 0;
+              final text = context.loc.notes_title(noteCount);
+              return Text(text);
+            } else {
+              return const Text('');
+            }
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -98,10 +100,10 @@ class _NotesViewState extends State<NotesView> {
                   },
                 );
               } else {
-                return const Center(child: CircularProgressIndicator());
+                return const CircularProgressIndicator();
               }
             default:
-              return const Center(child: CircularProgressIndicator());
+              return const CircularProgressIndicator();
           }
         },
       ),

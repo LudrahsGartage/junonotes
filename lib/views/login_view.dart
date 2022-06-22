@@ -39,12 +39,19 @@ class _LoginViewState extends State<LoginView> {
         if (state is AuthStateLoggedOut) {
           if (state.exception is UserNotFoundAuthException) {
             await showErrorDialog(
-                context, context.loc.login_error_cannot_find_user);
+              context,
+              context.loc.login_error_cannot_find_user,
+            );
           } else if (state.exception is WrongPasswordAuthException) {
             await showErrorDialog(
-                context, context.loc.login_error_wrong_credentials);
+              context,
+              context.loc.login_error_wrong_credentials,
+            );
           } else if (state.exception is GenericAuthException) {
-            await showErrorDialog(context, context.loc.login_error_auth_error);
+            await showErrorDialog(
+              context,
+              context.loc.login_error_auth_error,
+            );
           }
         }
       },
@@ -91,19 +98,23 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 TextButton(
                   onPressed: () {
-                    context
-                        .read<AuthBloc>()
-                        .add(const AuthEventShouldRegister());
+                    context.read<AuthBloc>().add(
+                          const AuthEventForgotPassword(),
+                        );
                   },
-                  child: Text(context.loc.login_view_not_registered_yet),
+                  child: Text(
+                    context.loc.login_view_forgot_password,
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
-                    context
-                        .read<AuthBloc>()
-                        .add(const AuthEventForgotPassword());
+                    context.read<AuthBloc>().add(
+                          const AuthEventShouldRegister(),
+                        );
                   },
-                  child: Text(context.loc.login_view_forgot_password),
+                  child: Text(
+                    context.loc.login_view_not_registered_yet,
+                  ),
                 )
               ],
             ),

@@ -11,7 +11,7 @@ class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
 
   @override
-  State<RegisterView> createState() => _RegisterViewState();
+  _RegisterViewState createState() => _RegisterViewState();
 }
 
 class _RegisterViewState extends State<RegisterView> {
@@ -39,20 +39,31 @@ class _RegisterViewState extends State<RegisterView> {
         if (state is AuthStateRegistering) {
           if (state.exception is WeakPasswordAuthException) {
             await showErrorDialog(
-                context, context.loc.register_error_weak_password);
+              context,
+              context.loc.register_error_weak_password,
+            );
           } else if (state.exception is EmailAlreadyInUseAuthException) {
             await showErrorDialog(
-                context, context.loc.register_error_email_already_in_use);
+              context,
+              context.loc.register_error_email_already_in_use,
+            );
           } else if (state.exception is GenericAuthException) {
-            await showErrorDialog(context, context.loc.register_error_generic);
+            await showErrorDialog(
+              context,
+              context.loc.register_error_generic,
+            );
           } else if (state.exception is InvalidEmailAuthException) {
             await showErrorDialog(
-                context, context.loc.register_error_invalid_email);
+              context,
+              context.loc.register_error_invalid_email,
+            );
           }
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: Text(context.loc.register)),
+        appBar: AppBar(
+          title: Text(context.loc.register),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
@@ -67,7 +78,8 @@ class _RegisterViewState extends State<RegisterView> {
                   autofocus: true,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-                      hintText: context.loc.email_text_field_placeholder),
+                    hintText: context.loc.email_text_field_placeholder,
+                  ),
                 ),
                 TextField(
                   controller: _password,
@@ -75,7 +87,8 @@ class _RegisterViewState extends State<RegisterView> {
                   enableSuggestions: false,
                   autocorrect: false,
                   decoration: InputDecoration(
-                      hintText: context.loc.password_text_field_placeholder),
+                    hintText: context.loc.password_text_field_placeholder,
+                  ),
                 ),
                 Center(
                   child: Column(
@@ -84,20 +97,27 @@ class _RegisterViewState extends State<RegisterView> {
                         onPressed: () async {
                           final email = _email.text;
                           final password = _password.text;
-                          context
-                              .read<AuthBloc>()
-                              .add(AuthEventRegister(email, password));
+                          context.read<AuthBloc>().add(
+                                AuthEventRegister(
+                                  email,
+                                  password,
+                                ),
+                              );
                         },
-                        child: Text(context.loc.register),
+                        child: Text(
+                          context.loc.register,
+                        ),
                       ),
                       TextButton(
-                          onPressed: () {
-                            context
-                                .read<AuthBloc>()
-                                .add(const AuthEventLogOut());
-                          },
-                          child: Text(
-                              context.loc.register_view_already_registered))
+                        onPressed: () {
+                          context.read<AuthBloc>().add(
+                                const AuthEventLogOut(),
+                              );
+                        },
+                        child: Text(
+                          context.loc.register_view_already_registered,
+                        ),
+                      ),
                     ],
                   ),
                 ),
